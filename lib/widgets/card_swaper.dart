@@ -3,7 +3,7 @@ import 'package:movies_consumer/models/model_movie.dart';
 import 'package:movies_consumer/widgets/swiper.dart';
 
 class CardSwaper extends StatelessWidget {
-  late List<Movie> lstMovieSwaper;
+  late List<Movie> lstMovieSwaper = List.empty();
   CardSwaper(
     List<Movie> listMovie, {
     Key? key,

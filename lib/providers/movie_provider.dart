@@ -16,6 +16,8 @@ class MoviesProvider extends ChangeNotifier {
   List<Movie> onListMovie = <Movie>[];
   List<Movie> onListMoviePopulation = <Movie>[];
 
+  int _incrementMovie = 0;
+
   MoviesProvider() {
     print("Movies Provider inicializando");
 
@@ -25,28 +27,27 @@ class MoviesProvider extends ChangeNotifier {
         .whenComplete(() => {notifyListeners()});
 
     getOnDisplayPopulationMovies()
-        .then((value) => onListMoviePopulation =
-            PopularResponse.popularResponseFromJson(value).results)
+        .then((value) => onListMoviePopulation = [
+              ...onListMoviePopulation,
+              ...PopularResponse.popularResponseFromJson(value).results
+            ])
         .whenComplete(() => notifyListeners());
-
-    print("FINISH METHOD");
   }
 
   Future<String> getOnDisplayNewMovie() async {
-    print("Get On Display New Movies");
-
-    var url = Uri.https(_baseURL, _endPointNewMovies,
-        {"api_key": _apiKkey, "language": _language, "page": "1"});
-    var response = await http.get(url);
+    var response = await http.get(_preparePetition(_endPointNewMovies));
     return response.body;
   }
 
   Future<String> getOnDisplayPopulationMovies() async {
-    print("Get On Display Population Movies");
-
-    var url = Uri.https(_baseURL, _endPointPopulation,
-        {"api_key": _apiKkey, "language": _language, "page": "1"});
-    var response = await http.get(url);
+    ++_incrementMovie;
+    var response = await http
+        .get(_preparePetition(_endPointPopulation, page: _incrementMovie));
     return response.body;
+  }
+
+  Uri _preparePetition(String endPoint, {int page = 1}) {
+    return Uri.https(_baseURL, endPoint,
+        {"api_key": _apiKkey, "language": _language, "page": page.toString()});
   }
 }

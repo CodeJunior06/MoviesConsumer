@@ -11,7 +11,8 @@ class MenuPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final listMoviePlaying = Provider.of<MoviesProvider>(context);
 
-    print(listMoviePlaying.onListMovie);
+    print("Now Movies ${listMoviePlaying.onListMovie}");
+    print("Population ${listMoviePlaying.onListMoviePopulation}");
 
     return Scaffold(
         appBar: AppBar(
@@ -25,7 +26,10 @@ class MenuPage extends StatelessWidget {
           scrollDirection: Axis.vertical,
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            children: [CardSwaper(listMoviePlaying.onListMovie), MovieSlider()],
+            children: [
+              CardSwaper(listMoviePlaying.onListMovie),
+              MovieSlider(listMoviePlaying.onListMoviePopulation)
+            ],
           ),
         ));
   }
