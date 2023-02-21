@@ -26,12 +26,7 @@ class MoviesProvider extends ChangeNotifier {
             (value) => onListMovie = NowPlayingModel.fromRawJson(value).results)
         .whenComplete(() => {notifyListeners()});
 
-    getOnDisplayPopulationMovies()
-        .then((value) => onListMoviePopulation = [
-              ...onListMoviePopulation,
-              ...PopularResponse.popularResponseFromJson(value).results
-            ])
-        .whenComplete(() => notifyListeners());
+      getPopulationMovies();
   }
 
   Future<String> getOnDisplayNewMovie() async {
@@ -40,7 +35,7 @@ class MoviesProvider extends ChangeNotifier {
   }
 
   Future<String> getOnDisplayPopulationMovies() async {
-    ++_incrementMovie;
+    _incrementMovie++;
     var response = await http
         .get(_preparePetition(_endPointPopulation, page: _incrementMovie));
     return response.body;
@@ -49,5 +44,14 @@ class MoviesProvider extends ChangeNotifier {
   Uri _preparePetition(String endPoint, {int page = 1}) {
     return Uri.https(_baseURL, endPoint,
         {"api_key": _apiKkey, "language": _language, "page": page.toString()});
+  }
+
+  void getPopulationMovies(){
+     getOnDisplayPopulationMovies()
+        .then((value) => onListMoviePopulation = [
+              ...onListMoviePopulation,
+              ...PopularResponse.popularResponseFromJson(value).results
+            ])
+        .whenComplete(() => notifyListeners());
   }
 }

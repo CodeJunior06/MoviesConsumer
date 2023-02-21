@@ -9,10 +9,10 @@ class MenuPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final listMoviePlaying = Provider.of<MoviesProvider>(context);
+    final movieProvider= Provider.of<MoviesProvider>(context);
 
-    print("Now Movies ${listMoviePlaying.onListMovie}");
-    print("Population ${listMoviePlaying.onListMoviePopulation}");
+    print("Now Movies ${movieProvider.onListMovie}");
+    print("Population ${movieProvider.onListMoviePopulation}");
 
     return Scaffold(
         appBar: AppBar(
@@ -27,8 +27,11 @@ class MenuPage extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              CardSwaper(listMoviePlaying.onListMovie),
-              MovieSlider(listMoviePlaying.onListMoviePopulation)
+              CardSwaper(movieProvider.onListMovie),
+              MovieSlider(movieProvider.onListMoviePopulation, () =>{
+                print("ON CALLBACK"),
+                movieProvider.getPopulationMovies()
+              },title: "POPULARES",)
             ],
           ),
         ));
