@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:movies_consumer/models/model_movie.dart';
 import 'package:movies_consumer/widgets/casting_cards.dart';
 
+// ignore: must_be_immutable
 class InformationPage extends StatelessWidget {
-  const InformationPage({Key? key}) : super(key: key);
-
+  InformationPage({Key? key}) : super(key: key);
+  late Movie movie;
   @override
   Widget build(BuildContext context) {
-    /* final String movie =
-        ModalRoute.of(context)?.settings.toString() ?? 'XXXXXXX';*/
+    movie = ModalRoute.of(context)?.settings.arguments as Movie;
 
     return Scaffold(
         body: CustomScrollView(
       slivers: [
-        const _CustomAppBar(),
+        _CustomAppBar(movie),
         SliverList(
             delegate: SliverChildListDelegate([
           _PosterAndTitle(),
@@ -25,8 +26,10 @@ class InformationPage extends StatelessWidget {
   }
 }
 
+// ignore: must_be_immutable
 class _CustomAppBar extends StatelessWidget {
-  const _CustomAppBar({Key? key}) : super(key: key);
+  Movie movie;
+  _CustomAppBar(this.movie, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -37,18 +40,18 @@ class _CustomAppBar extends StatelessWidget {
       pinned: true,
       flexibleSpace: FlexibleSpaceBar(
         centerTitle: true,
-        titlePadding: EdgeInsets.all(0),
+        titlePadding: const EdgeInsets.all(0),
         title: Container(
             width: double.infinity,
             alignment: Alignment.bottomCenter,
             color: Colors.black12,
-            child: const Text(
-              'Movie_Title',
+            child: Text(
+              movie.title,
               style: TextStyle(fontSize: 16),
             )),
-        background: const FadeInImage(
+        background: FadeInImage(
           placeholder: AssetImage("assets/loading.gif"),
-          image: NetworkImage("https://via.placeholder.com/300x400"),
+          image: NetworkImage(movie.completeURImageBackground),
           fit: BoxFit.cover,
         ),
       ),

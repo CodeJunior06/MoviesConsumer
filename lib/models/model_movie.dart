@@ -33,8 +33,12 @@ class Movie {
   double voteAverage;
   int voteCount;
 
-  String get completeURImage => posterPath == null ? "https://i.stack.imgur.com/GNhxO.png" : "https://image.tmdb.org/t/p/w500$posterPath" ;
-  
+  String get completeURImage => posterPath == null
+      ? "https://i.stack.imgur.com/GNhxO.png"
+      : "https://image.tmdb.org/t/p/w500$posterPath";
+  String get completeURImageBackground => backdropPath == null
+      ? "https://i.stack.imgur.com/GNhxO.png"
+      : "https://image.tmdb.org/t/p/w500$backdropPath";
 
   factory Movie.fromRawJson(String str) => Movie.fromJson(json.decode(str));
 

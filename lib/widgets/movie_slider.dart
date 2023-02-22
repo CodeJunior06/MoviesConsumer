@@ -6,7 +6,9 @@ class MovieSlider extends StatefulWidget {
   late List<Movie> lstMoviesPopulation = List.empty();
   late Function onNextPage;
   final String title;
-  MovieSlider(this.lstMoviesPopulation,Function onNext, {Key? key, required this.title}) : super(key: key){
+  MovieSlider(this.lstMoviesPopulation, Function onNext,
+      {Key? key, required this.title})
+      : super(key: key) {
     onNextPage = onNext;
   }
 
@@ -15,36 +17,6 @@ class MovieSlider extends StatefulWidget {
 }
 
 class _MovieSliderState extends State<MovieSlider> {
-
-
-
-final ScrollController scrollController = ScrollController();
-
-  @override
-  void initState() {
-    super.initState();
-    scrollController.addListener(() {
-      
-      print(scrollController.position.pixels);
-      print(scrollController.position.maxScrollExtent);
-
-      if( scrollController.position.pixels >= scrollController.position.maxScrollExtent-500){
-          widget.onNextPage();
-      }
-
-    });
-
-  }
-
-  @override
-  void dispose() {
-    
-
-
-    super.dispose();
-  }
-
-
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -53,7 +25,7 @@ final ScrollController scrollController = ScrollController();
       width: double.infinity,
       height: size.height * 0.41,
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-         Padding(
+        Padding(
             padding: EdgeInsets.all(10),
             child: Text(widget.title,
                 style: const TextStyle(
@@ -62,7 +34,6 @@ final ScrollController scrollController = ScrollController();
                     fontWeight: FontWeight.bold))),
         Expanded(
           child: ListView.builder(
-            controller: scrollController,
             scrollDirection: Axis.horizontal,
             itemCount: widget.lstMoviesPopulation.length,
             itemBuilder: (context, index) {
@@ -89,7 +60,8 @@ class _MoviePoster extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       child: Column(children: [
         GestureDetector(
-            onTap: () => Navigator.pushNamed(context, Routes.INFORMATION,arguments: movie),
+            onTap: () => Navigator.pushNamed(context, Routes.INFORMATION,
+                arguments: movie),
             child: ClipRRect(
                 borderRadius: BorderRadius.circular(20),
                 child: FadeInImage(
