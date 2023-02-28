@@ -28,9 +28,9 @@ class ActorResponse {
         "crew": List<dynamic>.from(crew.map((x) => x.toJson())),
     };
     
-    ActorResponse actorResponseFromJson(String str) => ActorResponse.fromJson(json.decode(str));
+    factory ActorResponse.actorResponseFromJson(String str) => ActorResponse.fromJson(json.decode(str));
 
-String actorResponseToJson(ActorResponse data) => json.encode(data.toJson());
+    String actorResponseToJson(ActorResponse data) => json.encode(data.toJson());
 }
 
 

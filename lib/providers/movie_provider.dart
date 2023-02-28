@@ -14,7 +14,7 @@ class MoviesProvider extends ChangeNotifier {
   final String _baseURL = "api.themoviedb.org";
   final String _endPointNewMovies = "3/movie/now_playing";
   final String _endPointPopulation = "3/movie/popular";
-  
+
   List<Movie> onListMovie = <Movie>[];
   List<Movie> onListMoviePopulation = <Movie>[];
 
@@ -59,17 +59,11 @@ class MoviesProvider extends ChangeNotifier {
         .whenComplete(() => notifyListeners());
   }
 
-  getMovieCast(movieId) {
-      getOndisplayAuthor(movieId).then((value)  {
-
-        
-      });
-  }
-  
   Future<List<Person>> getOndisplayAuthor(movieId) async {
     var response = await http.get( _preparePetition("3/movie/{$movieId}/credits",page: 1));
     final responseAuthor = ActorResponse.actorResponseFromJson( response.body);
 
-    
+    movieAuthor[movieId] = responseAuthor.cast;
+    return responseAuthor.cast;
   }
 }
