@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import "package:http/http.dart" as http;
+import 'package:movies_consumer/models/model_actor.dart';
 import 'package:movies_consumer/models/model_movie.dart';
 import 'package:movies_consumer/models/model_now_playing.dart';
+import 'package:movies_consumer/models/model_person.dart';
 import 'package:movies_consumer/models/model_population.dart';
 
 class MoviesProvider extends ChangeNotifier {
@@ -12,9 +14,11 @@ class MoviesProvider extends ChangeNotifier {
   final String _baseURL = "api.themoviedb.org";
   final String _endPointNewMovies = "3/movie/now_playing";
   final String _endPointPopulation = "3/movie/popular";
-
+  
   List<Movie> onListMovie = <Movie>[];
   List<Movie> onListMoviePopulation = <Movie>[];
+
+  Map<int,List<Person>> movieAuthor = {};
 
   int _incrementMovie = 0;
 
@@ -53,5 +57,19 @@ class MoviesProvider extends ChangeNotifier {
               ...PopularResponse.popularResponseFromJson(value).results
             ])
         .whenComplete(() => notifyListeners());
+  }
+
+  getMovieCast(movieId) {
+      getOndisplayAuthor(movieId).then((value)  {
+
+        
+      });
+  }
+  
+  Future<List<Person>> getOndisplayAuthor(movieId) async {
+    var response = await http.get( _preparePetition("3/movie/{$movieId}/credits",page: 1));
+    final responseAuthor = ActorResponse.actorResponseFromJson( response.body);
+
+    
   }
 }

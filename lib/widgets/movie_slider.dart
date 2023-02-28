@@ -17,6 +17,28 @@ class MovieSlider extends StatefulWidget {
 }
 
 class _MovieSliderState extends State<MovieSlider> {
+
+
+  final ScrollController scrollController = ScrollController();
+  @override
+  void initState() {
+    super.initState();
+
+    scrollController.addListener(() {
+      
+      if(scrollController.position.pixels >= scrollController.position.maxScrollExtent -300){
+            widget.onNextPage();
+      }
+
+    });
+
+  }
+
+  @override
+  void dispose() {
+    scrollController.dispose();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -34,6 +56,7 @@ class _MovieSliderState extends State<MovieSlider> {
                     fontWeight: FontWeight.bold))),
         Expanded(
           child: ListView.builder(
+            controller: scrollController,
             scrollDirection: Axis.horizontal,
             itemCount: widget.lstMoviesPopulation.length,
             itemBuilder: (context, index) {
