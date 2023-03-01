@@ -1,32 +1,41 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:movies_consumer/models/model_person.dart';
 import 'package:movies_consumer/providers/movie_provider.dart';
 import 'package:provider/provider.dart';
 
 class CastingCards extends StatelessWidget {
-
   int movieId;
-   CastingCards(this.movieId,{Key? key}) : super(key: key);
+  CastingCards(this.movieId, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final movieProvider = Provider.of<MoviesProvider>(context, listen: false);
 
-    final movieProvider= Provider.of<MoviesProvider>(context,listen: false);
+    return FutureBuilder(
+        future: movieProvider.getOndisplayAuthor(movieId),
+        builder: (_, AsyncSnapshot<List<Person>> AsyncSnapshot) {
+          if (!AsyncSnapshot.hasData) {
+            return Container(
+              constraints: BoxConstraints(maxWidth: 350),
+              height: 180,
+              child: CupertinoActivityIndicator(),
+            );
+          }
 
-    return FutureBuilder(future: movieProvider.getOndisplayAuthor(movieId) ,builder: (_,AsyncSnapshot<List<Person>> AsyncSnapshot) {
+          final List<Person> lstAuthor = AsyncSnapshot.data!;
+
           return Container(
-        margin: EdgeInsets.only(bottom: 30),
-        width: double.infinity,
-        height: 180,
-        color: Colors.red,
-        child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemBuilder: (context, index) {
-              return const _CastCard();
-            }));
-
-    });
-
+              margin: const EdgeInsets.only(bottom: 30),
+              width: double.infinity,
+              height: 180,
+              color: Colors.red,
+              child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (context, index) {
+                    return const _CastCard();
+                  }));
+        });
   }
 }
 

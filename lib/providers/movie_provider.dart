@@ -18,7 +18,7 @@ class MoviesProvider extends ChangeNotifier {
   List<Movie> onListMovie = <Movie>[];
   List<Movie> onListMoviePopulation = <Movie>[];
 
-  Map<int,List<Person>> movieAuthor = {};
+  Map<int, List<Person>> movieAuthor = {};
 
   int _incrementMovie = 0;
 
@@ -30,7 +30,7 @@ class MoviesProvider extends ChangeNotifier {
             (value) => onListMovie = NowPlayingModel.fromRawJson(value).results)
         .whenComplete(() => {notifyListeners()});
 
-      getPopulationMovies();
+    getPopulationMovies();
   }
 
   Future<String> getOnDisplayNewMovie() async {
@@ -50,8 +50,8 @@ class MoviesProvider extends ChangeNotifier {
         {"api_key": _apiKkey, "language": _language, "page": page.toString()});
   }
 
-  void getPopulationMovies(){
-     getOnDisplayPopulationMovies()
+  void getPopulationMovies() {
+    getOnDisplayPopulationMovies()
         .then((value) => onListMoviePopulation = [
               ...onListMoviePopulation,
               ...PopularResponse.popularResponseFromJson(value).results
@@ -60,8 +60,9 @@ class MoviesProvider extends ChangeNotifier {
   }
 
   Future<List<Person>> getOndisplayAuthor(movieId) async {
-    var response = await http.get( _preparePetition("3/movie/{$movieId}/credits",page: 1));
-    final responseAuthor = ActorResponse.actorResponseFromJson( response.body);
+    var response =
+        await http.get(_preparePetition("3/movie/$movieId/credits", page: 1));
+    final responseAuthor = ActorResponse.actorResponseFromJson(response.body);
 
     movieAuthor[movieId] = responseAuthor.cast;
     return responseAuthor.cast;
